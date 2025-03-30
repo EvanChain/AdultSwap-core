@@ -1,9 +1,11 @@
-# Uniswap v4 Core
+# AdultSwap Core
 
 [![Lint](https://github.com/Uniswap/v4-core/actions/workflows/lint.yml/badge.svg)](https://github.com/Uniswap/v4-core/actions/workflows/lint.yml)
 [![Tests](https://github.com/Uniswap/v4-core/actions/workflows/tests-merge.yml/badge.svg)](https://github.com/Uniswap/v4-core/actions/workflows/tests-merge.yml)
 
-Uniswap v4 is a new automated market maker protocol that provides extensible and customizable pools. `v4-core` hosts the core pool logic for creating pools and executing pool actions like swapping and providing liquidity.
+AdultSwap is a new automated market maker protocol that extends the Uniswap V4 protocol.
+
+This project is only for study and research purposes and cannot be used for any commercial purpose.
 
 The contracts in this repo are in early stages - we are releasing the draft code now so that v4 can be built in public, with open feedback and meaningful community contribution. We expect this will be a months-long process, and we appreciate any kind of contribution, no matter how small.
 
@@ -13,7 +15,7 @@ If you’re interested in contributing please see our [contribution guidelines](
 
 ## Whitepaper
 
-A more detailed description of Uniswap v4 Core can be found in the draft of the [Uniswap v4 Core Whitepaper](./docs/whitepaper/whitepaper-v4.pdf).
+A more detailed description of AdultSwap Core can be found in the draft of the [AdultSwap Core Whitepaper](./docs/whitepaper/whitepaper-v4.pdf).
 
 ## Architecture
 
@@ -70,7 +72,7 @@ test/
 To utilize the contracts and deploy to a local testnet, you can install the code in your repo with forge:
 
 ```markdown
-forge install https://github.com/Uniswap/v4-core
+forge install https://github.com/AdultSwap/v4-core
 ```
 
 To integrate with the contracts, the interfaces are available to use:
@@ -98,4 +100,4 @@ contract MyContract is IUnlockCallback {
 
 ## License
 
-Uniswap V4 Core is licensed under the Business Source License 1.1 (`BUSL-1.1`), see [BUSL_LICENSE](https://github.com/Uniswap/v4-core/blob/main/licenses/BUSL_LICENSE), and the MIT License (`MIT`), see [MIT_LICENSE](https://github.com/Uniswap/v4-core/blob/main/licenses/MIT_LICENSE). Each file in Uniswap V4 Core states the applicable license type in the header.
+AdultSwap Core is licensed under the Business Source License 1.1 (`BUSL-1.1`), see [BUSL_LICENSE](https://github.com/AdultSwap/v4-core/blob/main/licenses/BUSL_LICENSE), and the MIT License (`MIT`), see [MIT_LICENSE](https://github.com/AdultSwap/v4-core/blob/main/licenses/MIT_LICENSE). Each file in AdultSwap Core states the applicable license type in the header.
