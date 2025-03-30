@@ -6,6 +6,7 @@ import {LiquidityBuffer, LiquidityBufferLibrary} from "./types/LiquidityBuffer.s
 import {Currency, CurrencyLibrary} from "./types/Currency.sol";
 import {SafeCast} from "./libraries/SafeCast.sol";
 import {Extsload} from "./Extsload.sol";
+import {IStakingProtocol} from "./interfaces/IStakingProtocol.sol";
 
 abstract contract LiquidityManager {
     using Buffer for Buffer.State;
@@ -34,13 +35,15 @@ abstract contract LiquidityManager {
         if (releaseAmount > 0) {
             // release
             stakingProtocol.withdraw(Currency.unwrap(currency), address(this), uint256(releaseAmount));
-            _accountDelta(currency, releaseAmount, target);
-        }else if (releaseAmount < 0) {
-            _accountDelta(currency, releaseAmount, target);
+            _accountDelta(currency, deltaAmount.toInt128(), target);
+        } else if (releaseAmount < 0) {
+            _accountDelta(currency, deltaAmount.toInt128(), target);
             // deposit
             stakingProtocol.deposit(Currency.unwrap(currency), uint256(-releaseAmount));
-        }else{
-            _accountDelta(currency, releaseAmount, target);
+        } else {
+            _accountDelta(currency, deltaAmount.toInt128(), target);
         }
     }
+
+    function _accountDelta(Currency currency, int128 delta, address target) internal virtual;
 }

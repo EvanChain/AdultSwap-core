@@ -373,7 +373,7 @@ contract PoolManager is
     }
 
     /// @notice Adds a balance delta in a currency for a target address
-    function _accountDelta(Currency currency, int128 delta, address target) internal {
+    function _accountDelta(Currency currency, int128 delta, address target) internal override {
         if (delta == 0) return;
 
         (int256 previous, int256 next) = currency.applyDelta(target, delta);
@@ -396,8 +396,8 @@ contract PoolManager is
         console.log("amount1", delta.amount1());
 
         console.log("target", target);
-        _doBuffer(key.currency0, delta.amount0());
-        _doBuffer(key.currency1, delta.amount1());
+        _doBuffer(key.currency0, delta.amount0(), target);
+        _doBuffer(key.currency1, delta.amount1(), target);
     }
 
     /// @notice Implementation of the _getPool function defined in ProtocolFees

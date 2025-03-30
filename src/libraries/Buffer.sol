@@ -29,9 +29,14 @@ library Buffer {
     /// @param state The state of the buffer
     /// @param currency The currency to buffer
     /// @param deltaAmount The change in balance
-    function doBuffer(State storage state, Currency currency, int256 deltaAmount) internal view returns (IStakingProtocol stakingProtocol, int256 releaseAmount) {
+    function doBuffer(State storage state, Currency currency, int256 deltaAmount)
+        internal
+        view
+        returns (IStakingProtocol stakingProtocol, int256 releaseAmount)
+    {
         uint256 tokenBalance = currency.balanceOfSelf();
         stakingProtocol = state.stakingProtocol;
         if (stakingProtocol == IStakingProtocol(address(0))) return (stakingProtocol, 0);
-        releaseAmount = state.liquidityBuffer.getReleaseAmount(tokenBalance, deltaAmount);    }
+        releaseAmount = state.liquidityBuffer.getReleaseAmount(tokenBalance, deltaAmount);
+    }
 }
