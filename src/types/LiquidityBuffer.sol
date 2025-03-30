@@ -45,7 +45,7 @@ library LiquidityBufferLibrary {
         pure
         returns (int256)
     {
-        int256 newBalance = tokenBalance.toInt256() + deltaAmount;
+        int256 newBalance = tokenBalance.toInt256() - deltaAmount;
         // If the new balance is below the minimum balance, release the difference between the target balance and the new balance
         if (newBalance < liquidityBuffer.minBalance.toInt256() || newBalance > liquidityBuffer.maxBalance.toInt256()) {
             return liquidityBuffer.targetBalance.toInt256() - newBalance;

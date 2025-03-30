@@ -34,15 +34,40 @@ abstract contract LiquidityManager {
         (IStakingProtocol stakingProtocol, int256 releaseAmount) = _buffer(currency).doBuffer(currency, deltaAmount);
         if (releaseAmount > 0) {
             // release
-            stakingProtocol.withdraw(Currency.unwrap(currency), address(this), uint256(releaseAmount));
+            _delegateWithdraw(stakingProtocol, Currency.unwrap(currency), uint256(releaseAmount));
             _accountDelta(currency, deltaAmount.toInt128(), target);
         } else if (releaseAmount < 0) {
             _accountDelta(currency, deltaAmount.toInt128(), target);
             // deposit
-            stakingProtocol.deposit(Currency.unwrap(currency), uint256(-releaseAmount));
+            _delegateDeposit(stakingProtocol, Currency.unwrap(currency), uint256(-releaseAmount));
         } else {
             _accountDelta(currency, deltaAmount.toInt128(), target);
         }
+    }
+
+    function _delegateWithdraw(IStakingProtocol stakingProtocol, address currency, uint256 amount) internal {
+        _delegateCall(
+            address(stakingProtocol),
+            abi.encodeWithSelector(IStakingProtocol.withdraw.selector, currency, address(this), amount)
+        );
+    }
+
+    function _delegateDeposit(IStakingProtocol stakingProtocol, address currency, uint256 amount) internal {
+        _delegateCall(
+            address(stakingProtocol), abi.encodeWithSelector(IStakingProtocol.deposit.selector, currency, amount)
+        );
+    }
+
+    function _delegateCall(address target, bytes memory data) internal returns (bytes memory) {
+        (bool success, bytes memory returnData) = target.delegatecall(data);
+        if (!success) {
+            assembly {
+                let ptr := add(returnData, 0x20)
+                let len := mload(returnData)
+                revert(ptr, len)
+            }
+        }
+        return returnData;
     }
 
     function _accountDelta(Currency currency, int128 delta, address target) internal virtual;
