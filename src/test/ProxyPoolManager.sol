@@ -95,8 +95,7 @@ contract ProxyPoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909
     }
 
     /// @inheritdoc IPoolManager
-    function setBuffer(Currency, LiquidityBuffer memory, address) external{
-    }
+    function setBuffer(Currency, LiquidityBuffer memory, address) external {}
 
     /// @inheritdoc IPoolManager
     function modifyLiquidity(

@@ -155,9 +155,10 @@ contract PoolManager is
     /// @param currency The currency to set the buffer for
     /// @param liquidityBuffer The liquidity buffer to set
     /// @param stakingProtocol The staking protocol to set
-    function setBuffer(Currency currency, LiquidityBuffer memory liquidityBuffer, address stakingProtocol) external
-    override
-    noDelegateCall
+    function setBuffer(Currency currency, LiquidityBuffer memory liquidityBuffer, address stakingProtocol)
+        external
+        override
+        noDelegateCall
     {
         _setBuffer(currency, liquidityBuffer, IStakingProtocol(stakingProtocol));
     }
