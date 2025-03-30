@@ -26,6 +26,7 @@ import {Extsload} from "./Extsload.sol";
 import {Exttload} from "./Exttload.sol";
 import {CustomRevert} from "./libraries/CustomRevert.sol";
 import {LiquidityManager} from "./LiquidityManager.sol";
+import {Buffer, LiquidityBuffer, IStakingProtocol} from "./libraries/Buffer.sol";
 import {console} from "forge-std/console.sol";
 
 //  4
@@ -148,6 +149,17 @@ contract PoolManager is
         emit Initialize(id, key.currency0, key.currency1, key.fee, key.tickSpacing, key.hooks, sqrtPriceX96, tick);
 
         key.hooks.afterInitialize(key, sqrtPriceX96, tick);
+    }
+
+    /// @notice Set the buffer for a currency
+    /// @param currency The currency to set the buffer for
+    /// @param liquidityBuffer The liquidity buffer to set
+    /// @param stakingProtocol The staking protocol to set
+    function setBuffer(Currency currency, LiquidityBuffer memory liquidityBuffer, address stakingProtocol) external
+    override
+    noDelegateCall
+    {
+        _setBuffer(currency, liquidityBuffer, IStakingProtocol(stakingProtocol));
     }
 
     /// @inheritdoc IPoolManager

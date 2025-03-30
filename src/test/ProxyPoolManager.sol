@@ -24,6 +24,7 @@ import {CurrencyReserves} from "../libraries/CurrencyReserves.sol";
 import {Extsload} from "../Extsload.sol";
 import {Exttload} from "../Exttload.sol";
 import {CustomRevert} from "../libraries/CustomRevert.sol";
+import {LiquidityBuffer} from "../types/LiquidityBuffer.sol";
 
 /// @notice A proxy pool manager that delegates calls to the real/delegate pool manager
 contract ProxyPoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909Claims, Extsload, Exttload {
@@ -91,6 +92,10 @@ contract ProxyPoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909
         // emit all details of a pool key. poolkeys are not saved in storage and must always be provided by the caller
         // the key's fee may be a static fee or a sentinel to denote a dynamic fee.
         emit Initialize(id, key.currency0, key.currency1, key.fee, key.tickSpacing, key.hooks, sqrtPriceX96, tick);
+    }
+
+    /// @inheritdoc IPoolManager
+    function setBuffer(Currency, LiquidityBuffer memory, address) external{
     }
 
     /// @inheritdoc IPoolManager

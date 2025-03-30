@@ -5,6 +5,7 @@ import {IStakingProtocol} from "../interfaces/IStakingProtocol.sol";
 import {IERC4626Minimal} from "../interfaces/external/IERC4626Minimal.sol";
 import {IERC20Minimal} from "../interfaces/external/IERC20Minimal.sol";
 import {OnlyDelegateCall} from "../OnlyDelegateCall.sol";
+import {console} from "forge-std/console.sol";
 
 contract ERC4626StakingProtocol is IStakingProtocol, OnlyDelegateCall {
     error InvalidAssetOrVault();

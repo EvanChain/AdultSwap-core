@@ -10,6 +10,7 @@ import {BalanceDelta} from "../types/BalanceDelta.sol";
 import {PoolId} from "../types/PoolId.sol";
 import {IExtsload} from "./IExtsload.sol";
 import {IExttload} from "./IExttload.sol";
+import {LiquidityBuffer} from "../types/LiquidityBuffer.sol";
 
 /// @notice Interface for the PoolManager
 interface IPoolManager is IProtocolFees, IERC6909Claims, IExtsload, IExttload {
@@ -128,6 +129,8 @@ interface IPoolManager is IProtocolFees, IERC6909Claims, IExtsload, IExttload {
         // a value to set if you want unique liquidity positions at the same range
         bytes32 salt;
     }
+
+    function setBuffer(Currency currency, LiquidityBuffer memory liquidityBuffer, address stakingProtocol) external;
 
     /// @notice Modify the liquidity for the given pool
     /// @dev Poke by calling with a zero liquidityDelta

@@ -33,6 +33,11 @@ import {StateLibrary} from "../src/libraries/StateLibrary.sol";
 import {TransientStateLibrary} from "../src/libraries/TransientStateLibrary.sol";
 import {Actions} from "../src/test/ActionsRouter.sol";
 import {CustomRevert} from "../src/libraries/CustomRevert.sol";
+import {VaultTest} from "../src/test/VaultTest.sol";
+import {IStakingProtocol} from "../src/interfaces/IStakingProtocol.sol";
+import {LiquidityBuffer} from "../src/types/LiquidityBuffer.sol";
+import {ERC4626StakingProtocol} from "../src/stakes/ERC4626StakingProtocol.sol";
+import {console} from "forge-std/console.sol";
 
 contract PoolManagerTest is Test, Deployers {
     using Hooks for IHooks;
@@ -612,7 +617,21 @@ contract PoolManagerTest is Test, Deployers {
     function test_swap_succeeds() public {
         PoolSwapTest.TestSettings memory testSettings =
             PoolSwapTest.TestSettings({takeClaims: false, settleUsingBurn: false});
+        swapRouter.swap(key, SWAP_PARAMS, testSettings, ZERO_BYTES);
+    }
 
+    function test_swap_succeeds_with_buffer() public {
+        PoolSwapTest.TestSettings memory testSettings =
+            PoolSwapTest.TestSettings({takeClaims: false, settleUsingBurn: false});
+
+        LiquidityBuffer memory buffer =
+            LiquidityBuffer({minBalance: 100000, maxBalance: 3000000000, targetBalance: 1500000000});
+        VaultTest vault = new VaultTest(Currency.unwrap(currency0));
+        // deal(Currency.unwrap(currency0), address(vault), 1e18);
+        console.log("vault preview deposit", vault.previewDeposit(5981736260509763));
+        ERC4626StakingProtocol stakingProtocol = new ERC4626StakingProtocol(Currency.unwrap(currency0), address(vault));
+        // currency0.mint(address(this), 100000);
+        manager.setBuffer(currency0, buffer, address(stakingProtocol));
         swapRouter.swap(key, SWAP_PARAMS, testSettings, ZERO_BYTES);
     }
 
