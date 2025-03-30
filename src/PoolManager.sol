@@ -25,6 +25,8 @@ import {CurrencyReserves} from "./libraries/CurrencyReserves.sol";
 import {Extsload} from "./Extsload.sol";
 import {Exttload} from "./Exttload.sol";
 import {CustomRevert} from "./libraries/CustomRevert.sol";
+import {LiquidityManager} from "./LiquidityManager.sol";
+import {console} from "forge-std/console.sol";
 
 //  4
 //   44
@@ -76,7 +78,15 @@ import {CustomRevert} from "./libraries/CustomRevert.sol";
 
 /// @title PoolManager
 /// @notice Holds the state for all pools
-contract PoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909Claims, Extsload, Exttload {
+contract PoolManager is
+    IPoolManager,
+    ProtocolFees,
+    NoDelegateCall,
+    ERC6909Claims,
+    Extsload,
+    Exttload,
+    LiquidityManager
+{
     using SafeCast for *;
     using Pool for *;
     using Hooks for IHooks;
@@ -377,6 +387,18 @@ contract PoolManager is IPoolManager, ProtocolFees, NoDelegateCall, ERC6909Claim
 
     /// @notice Accounts the deltas of 2 currencies to a target address
     function _accountPoolBalanceDelta(PoolKey memory key, BalanceDelta delta, address target) internal {
+        console.log("_accountPoolBalanceDelta");
+
+        console.log("currency0", Currency.unwrap(key.currency0));
+        console.log("amount0", delta.amount0());
+
+        console.log("currency1", Currency.unwrap(key.currency1));
+        console.log("amount1", delta.amount1());
+
+        console.log("target", target);
+        _doBuffer(key.currency0, delta.amount0());
+        _doBuffer(key.currency1, delta.amount1());
+
         _accountDelta(key.currency0, delta.amount0(), target);
         _accountDelta(key.currency1, delta.amount1(), target);
     }
