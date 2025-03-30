@@ -15,7 +15,7 @@ abstract contract LiquidityManager {
 
     bytes32 internal constant _BUFFER_STORAGE_POSITION = keccak256("v4.core.LiquidityManager._buffers");
 
-    function _setBuffer(Currency currency, Buffer.State memory state) internal {
+    function _setBuffer(Currency currency, Buffer.State storage state) internal {
         Buffer.State storage s = _buffer(currency);
         s.stakingProtocol = state.stakingProtocol;
         s.liquidityBuffer = state.liquidityBuffer;
@@ -30,9 +30,5 @@ abstract contract LiquidityManager {
 
     function _doBuffer(Currency currency, int256 amount) internal {
         _buffer(currency).doBuffer(currency.balanceOfSelf(), amount);
-    }
-
-    function _updateLiquidity(Currency currency) internal {
-        _buffer(currency).updateLiquidity();
     }
 }

@@ -10,13 +10,17 @@ library Buffer {
     using SafeCast for uint256;
 
     struct State {
-        uint256 totalAssets;
+        // The total income = stakingProtocol.totalAssets() - totalPrincipal
+        uint256 totalPrincipal;
         LiquidityBuffer liquidityBuffer;
         IStakingProtocol stakingProtocol;
+        // The share amount of user = currency provided / stakingProtocol.totalAssets()
+        // The income of user = totalIncome * userShare / stakingProtocol.totalAssets()
+        mapping(address => uint256) userShares;
     }
 
-    function updateTotalAssets(State storage state, uint256 totalAssets) internal {
-        state.totalAssets = totalAssets;
+    function updateTotalPrincipal(State storage state, uint256 totalPrincipal) internal {
+        state.totalPrincipal = totalPrincipal;
     }
 
     /// @notice Buffer the liquidity
@@ -39,10 +43,4 @@ library Buffer {
         }
     }
 
-    /// @notice Update the total assets of the buffer
-    /// @param state The state of the buffer
-    function updateLiquidity(State storage state) internal {
-        if (state.stakingProtocol == IStakingProtocol(address(0))) return;
-        state.totalAssets = state.stakingProtocol.totalAssets();
-    }
 }
