@@ -398,9 +398,6 @@ contract PoolManager is
         console.log("target", target);
         _doBuffer(key.currency0, delta.amount0());
         _doBuffer(key.currency1, delta.amount1());
-
-        _accountDelta(key.currency0, delta.amount0(), target);
-        _accountDelta(key.currency1, delta.amount1(), target);
     }
 
     /// @notice Implementation of the _getPool function defined in ProtocolFees

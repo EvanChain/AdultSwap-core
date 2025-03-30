@@ -28,7 +28,19 @@ abstract contract LiquidityManager {
         }
     }
 
-    function _doBuffer(Currency currency, int256 amount) internal {
-        _buffer(currency).doBuffer(currency, amount);
+    function _doBuffer(Currency currency, int256 deltaAmount, address target) internal {
+        if (deltaAmount == 0) return;
+        (IStakingProtocol stakingProtocol, int256 releaseAmount) = _buffer(currency).doBuffer(currency, deltaAmount);
+        if (releaseAmount > 0) {
+            // release
+            stakingProtocol.withdraw(Currency.unwrap(currency), address(this), uint256(releaseAmount));
+            _accountDelta(currency, releaseAmount, target);
+        }else if (releaseAmount < 0) {
+            _accountDelta(currency, releaseAmount, target);
+            // deposit
+            stakingProtocol.deposit(Currency.unwrap(currency), uint256(-releaseAmount));
+        }else{
+            _accountDelta(currency, releaseAmount, target);
+        }
     }
 }
