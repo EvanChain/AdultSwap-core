@@ -21,7 +21,7 @@ abstract contract LiquidityManager {
         s.liquidityBuffer = state.liquidityBuffer;
     }
 
-    function _buffer(Currency currency) private view returns (Buffer.State storage s) {
+    function _buffer(Currency currency) private pure returns (Buffer.State storage s) {
         bytes32 position = keccak256(abi.encode(_BUFFER_STORAGE_POSITION, currency));
         assembly {
             s.slot := position
