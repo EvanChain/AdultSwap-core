@@ -29,6 +29,6 @@ abstract contract LiquidityManager {
     }
 
     function _doBuffer(Currency currency, int256 amount) internal {
-        _buffer(currency).doBuffer(currency.balanceOfSelf(), amount);
+        _buffer(currency).doBuffer(currency, amount);
     }
 }
